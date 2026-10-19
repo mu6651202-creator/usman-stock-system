@@ -47,7 +47,6 @@ st.markdown("""
         transform: translateY(-2px);
         box-shadow: 0 5px 15px rgba(30,58,138,0.4);
     }
-    /* --- SMALL SPRINKLES LIVE BACKGROUND UP-DOWN --- */
     .sprinkle-bg {
         position: fixed;
         top: 0; left: 0;
@@ -71,7 +70,6 @@ st.markdown("""
         90% { opacity: 0.8; }
         100% { transform: translateY(-10vh) translateX(-20px) scale(0.5); opacity: 0; }
     }
-    /* Second layer for more depth */
     .dot2 {
         position: absolute;
         width: 4px;
@@ -88,7 +86,6 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Generate Small Live Sprinkles
 def inject_sprinkles():
     colors = ["#3b82f6","#10b981","#f59e0b","#ef4444","#8b5cf6","#ec4899","#06b6d4"]
     html = '<div class="sprinkle-bg">'
@@ -98,7 +95,6 @@ def inject_sprinkles():
         duration = random.uniform(3, 7)
         color = random.choice(colors)
         size = random.randint(4, 7)
-        # mix dot and dot2
         cls = "dot" if i % 2 == 0 else "dot2"
         html += f'<div class="{cls}" style="left:{left}%; background:{color}; width:{size}px; height:{size}px; animation-delay:{delay}s; animation-duration:{duration}s;"></div>'
     html += '</div>'
@@ -131,7 +127,7 @@ if "logged_in" not in st.session_state:
     st.session_state.username=""
 
 def login_page():
-    st.markdown('<div class="main-header"><h1>💎 USMAN TECHNOLOGIES</h1><p>Premium Business Suite • Live Sprinkle Background</p></div>', unsafe_allow_html=True)
+    st.markdown('<div class="main-header"><h1>💎 USMAN TECHNOLOGIES</h1><p>Enterprise Business Management Platform</p></div>', unsafe_allow_html=True)
     col1,col2,col3=st.columns([1,2,1])
     with col2:
         st.markdown('<div class="glass-card">', unsafe_allow_html=True)
@@ -166,7 +162,7 @@ with st.sidebar:
     st.divider()
     if st.button("Logout"): st.session_state.logged_in=False; st.rerun()
 
-st.markdown(f'<div class="main-header"><h2>Premium Business Dashboard</h2><p>Live Small Sprinkles in Background • {datetime.now().strftime("%d %B %Y")}</p></div>', unsafe_allow_html=True)
+st.markdown(f'<div class="main-header"><h2>Premium Business Dashboard</h2><p>USMAN TECHNOLOGIES • Enterprise Stock & Ledger System | {datetime.now().strftime("%B %Y")}</p></div>', unsafe_allow_html=True)
 
 conn=sqlite3.connect('usman.db')
 df_tx=pd.read_sql_query("SELECT * FROM stock_tx WHERE owner=?",conn,params=(owner,))
@@ -179,15 +175,11 @@ if "Dashboard" in menu:
     total_out = df_tx[df_tx['tx_type']=='OUT']['qty'].sum() if not df_tx.empty else 0
     current_stock_qty = total_in - total_out
     total_profit = df_tx['profit'].sum() if not df_tx.empty else 0
-    credit_total = df_cust[df_cust['type']=='CREDIT']['amount'].sum() if not df_cust.empty else 0
-    pending_total = df_cust[df_cust['type']=='PENDING']['amount'].sum() if not df_cust.empty else 0
-
     c1,c2,c3,c4=st.columns(4)
     with c1: st.markdown(f'<div class="glass-card"><h4>Total IN</h4><h2>{int(total_in)}</h2></div>', unsafe_allow_html=True)
     with c2: st.markdown(f'<div class="glass-card"><h4>Total OUT</h4><h2>{int(total_out)}</h2></div>', unsafe_allow_html=True)
     with c3: st.markdown(f'<div class="glass-card"><h4>Stock Left</h4><h2>{int(current_stock_qty)}</h2></div>', unsafe_allow_html=True)
     with c4: color = "#10b981" if total_profit>=0 else "#ef4444"; st.markdown(f'<div class="glass-card" style="border-left:5px solid {color}"><h4>Profit / Loss</h4><h2>Rs. {total_profit:,.0f}</h2></div>', unsafe_allow_html=True)
-
     st.divider()
     st.subheader("📈 Profit / Loss Graph - Goes Down If Loss")
     if not df_tx.empty:
@@ -199,7 +191,6 @@ if "Dashboard" in menu:
         st.area_chart(df_sorted[['c_stock']], height=250)
     else:
         st.info("Add some Stock IN/OUT to see graphs.")
-
 elif "Stock IN" in menu:
     st.markdown('<div class="glass-card">', unsafe_allow_html=True)
     st.subheader("Stock Movement")
@@ -223,7 +214,6 @@ elif "Stock IN" in menu:
                 conn.commit(); conn.close()
                 st.success(f"Saved! Profit: Rs. {profit}"); show_celebration()
     st.markdown('</div>', unsafe_allow_html=True)
-
 elif "Current Stock" in menu:
     st.subheader("📋 Current Stock Left")
     if not df_tx.empty:
@@ -236,7 +226,6 @@ elif "Current Stock" in menu:
         st.dataframe(summary, use_container_width=True, hide_index=True)
         st.bar_chart(summary.set_index('product')['Current Left'])
     else: st.info("No data yet.")
-
 elif "Credit" in menu:
     st.subheader("👥 Credit & Pending Customers")
     with st.form("cust_form"):
@@ -257,7 +246,6 @@ elif "Credit" in menu:
                 st.success("Customer Added!"); show_celebration()
     if not df_cust.empty:
         st.dataframe(df_cust[['name','type','amount','date','notes']], use_container_width=True, hide_index=True)
-
 elif "Cash Flow" in menu:
     st.subheader("💰 Cash IN / OUT")
     with st.form("cash_form"):
