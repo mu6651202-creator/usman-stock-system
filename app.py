@@ -3,7 +3,6 @@ import sqlite3
 import hashlib
 import pandas as pd
 from datetime import datetime, timedelta
-import random
 
 st.set_page_config(page_title="USMAN TECHNOLOGIES | Premium SaaS", layout="wide", page_icon="💎")
 
@@ -26,15 +25,8 @@ st.markdown("""
         background: linear-gradient(90deg, #1e3a8a, #3b82f6);
         color: white; border-radius: 12px; height: 46px; font-weight: 600; border: none;
     }
-    .metric-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 14px;
-        margin-bottom: 22px;
-    }
+    .metric-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 22px; }
     .small-card { padding: 16px !important; }
-    .small-card h4 { font-size: 13px; color: #64748b; margin: 0 0 4px 0; font-weight: 500; }
-    .small-card h2 { font-size: 24px; margin: 0; font-weight: 700; color: #0f172a; }
     .pricing-card { border: 2px solid #3b82f6; text-align: center; border-radius: 16px; }
     .pricing-card.pro { border-color: #f59e0b; background: linear-gradient(135deg, #fffbeb 0%, #ffffff 100%); transform: scale(1.02); }
     @media only screen and (max-width: 768px) {
@@ -42,6 +34,10 @@ st.markdown("""
     }
 </style>
 """, unsafe_allow_html=True)
+
+# --- CONFIG ---
+EASYPAISA_NUMBER = "03120914675"
+EASYPAISA_TITLE = "Muhammad Usman"
 
 def init_db():
     conn=sqlite3.connect('usman.db'); c=conn.cursor()
@@ -64,7 +60,7 @@ def check_subscription(username):
     data=c.fetchone(); conn.close()
     if not data: return True
     trial_start, sub_expiry, status = data
-    if username.lower() in ["usman", "admin", "muhammad usman", "mu6651202-creator"]:
+    if username.lower() in ["usman", "admin", "muhammad usman", "usman1234"]:
         return True
     if status == "ACTIVE" and sub_expiry:
         try:
@@ -92,8 +88,8 @@ def show_lock_screen():
     st.markdown('<div class="glass-card" style="margin-top:25px; text-align:center;">', unsafe_allow_html=True)
     st.markdown(f"""
     <h3>Please Pay via Easypaisa</h3>
-    <h1 style="color:#1e3a8a;">03120914675</h1>
-    <p><b>Account Title:</b> Muhammad Usman</p>
+    <h1 style="color:#1e3a8a;">{EASYPAISA_NUMBER}</h1>
+    <p><b>Account Title:</b> {EASYPAISA_TITLE}</p>
     <p>After payment, send screenshot on WhatsApp. Your account will be activated within 5 minutes.</p>
     """, unsafe_allow_html=True)
     st.link_button("📱 Send Screenshot on WhatsApp", f"https://wa.me/923120914675?text=Hello%20Usman,%20I%20paid%20Rs%203000%20for%20USMAN%20POS.%20Username:%20{st.session_state.username}")
@@ -125,13 +121,14 @@ def login_page():
                     conn.close()
                 else: st.warning("Please fill all fields")
         st.markdown('</div>', unsafe_allow_html=True)
+        st.info(f"💰 Payment: Easypaisa {EASYPAISA_NUMBER} | Title: {EASYPAISA_TITLE}")
 
 if not st.session_state.logged_in: login_page(); st.stop()
 
 owner=st.session_state.username
 if not check_subscription(owner): show_lock_screen()
 
-is_admin = owner.lower() in ["usman", "admin", "muhammad usman", "mu6651202-creator"]
+is_admin = owner.lower() in ["usman", "admin", "muhammad usman", "usman1234"]
 
 with st.sidebar:
     st.markdown(f"### Welcome, {owner}"); 
@@ -140,6 +137,15 @@ with st.sidebar:
     menu_options = ["📊 Dashboard & Graph","📦 Stock IN / OUT","📋 Current Stock","👥 Credit & Pending","💰 Cash Flow"]
     if is_admin: menu_options.append("🔐 ADMIN - Activate Users")
     menu=st.radio("Navigation", menu_options)
+    st.divider()
+    st.markdown(f"""
+    <div style="background:white; padding:12px; border-radius:12px; text-align:center; border:1px solid #e2e8f0;">
+    <p style="margin:0; font-size:12px; color:gray;">EASYPAISA PAYMENT</p>
+    <h3 style="margin:5px 0; color:#1e3a8a;">{EASYPAISA_NUMBER}</h3>
+    <p style="margin:0; font-size:12px;"><b>{EASYPAISA_TITLE}</b><br>Rs. 3000 / Month</p>
+    </div>
+    """, unsafe_allow_html=True)
+    st.link_button("📱 Pay on WhatsApp", f"https://wa.me/923120914675")
     st.divider()
     if st.button("Logout"): st.session_state.logged_in=False; st.rerun()
 
