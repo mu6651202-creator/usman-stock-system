@@ -7,115 +7,83 @@ import random
 
 st.set_page_config(page_title="USMAN TECHNOLOGIES | Premium", layout="wide", page_icon="💎")
 
-# --- PREMIUM DESIGN + SMALL LIVE SPRINKLES UP-DOWN ---
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
     html, body, [class*="css"] { font-family: 'Poppins', sans-serif; }
-    
-    .stApp {
-        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-        background-attachment: fixed;
-    }
+    .stApp { background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); background-attachment: fixed; }
     .main-header {
         background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #3b82f6 100%);
-        padding: 25px;
-        border-radius: 20px;
-        color: white;
-        text-align: center;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        margin-bottom: 25px;
+        padding: 25px; border-radius: 20px; color: white; text-align: center;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2); margin-bottom: 25px;
     }
     .glass-card {
-        background: rgba(255, 255, 255, 0.9);
-        backdrop-filter: blur(10px);
-        padding: 20px;
-        border-radius: 16px;
-        box-shadow: 0 8px 32px rgba(0,0,0,0.08);
-        border: 1px solid rgba(255,255,255,0.3);
+        background: rgba(255, 255, 255, 0.92); backdrop-filter: blur(10px);
+        padding: 18px; border-radius: 16px; box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+        border: 1px solid rgba(255,255,255,0.4);
     }
     .stButton>button {
         background: linear-gradient(90deg, #1e3a8a, #3b82f6);
-        color: white;
-        border-radius: 12px;
-        height: 48px;
-        font-weight: 600;
-        border: none;
-        transition: 0.3s;
+        color: white; border-radius: 12px; height: 46px; font-weight: 600; border: none;
     }
-    .stButton>button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(30,58,138,0.4);
+    /* --- NEW 2x2 GRID SYSTEM --- */
+    .metric-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 14px;
+        margin-bottom: 22px;
     }
-    .sprinkle-bg {
-        position: fixed;
-        top: 0; left: 0;
-        width: 100%; height: 100%;
-        pointer-events: none;
-        z-index: 0;
-        overflow: hidden;
+    .small-card { padding: 16px !important; }
+    .small-card h4 { font-size: 13px; color: #64748b; margin: 0 0 4px 0; font-weight: 500; }
+    .small-card h2 { font-size: 24px; margin: 0; font-weight: 700; color: #0f172a; }
+
+    @media only screen and (max-width: 768px) {
+        .metric-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; margin-bottom: 15px !important; }
+        .small-card { padding: 12px !important; border-radius: 14px !important; }
+        .small-card h4 { font-size: 11px !important; }
+        .small-card h2 { font-size: 17px !important; }
+        .main-header { padding: 14px 10px !important; border-radius: 14px !important; margin-bottom: 14px !important; }
+        .main-header h2 { font-size: 17px !important; }
+        .main-header p { font-size: 10px !important; line-height: 1.3 !important; }
+        .stButton>button { height: 42px !important; font-size: 14px !important; }
     }
-    .dot {
-        position: absolute;
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        opacity: 0.7;
-        animation: floatUpDown 4s ease-in-out infinite;
-    }
+
+    .sprinkle-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: hidden; }
+    .dot { position: absolute; width: 5px; height: 5px; border-radius: 50%; opacity: 0.6; animation: floatUpDown 5s ease-in-out infinite; }
     @keyframes floatUpDown {
         0% { transform: translateY(100vh) translateX(0) scale(0.5); opacity: 0; }
-        10% { opacity: 0.8; }
-        50% { transform: translateY(50vh) translateX(20px) scale(1); opacity: 1; }
-        90% { opacity: 0.8; }
-        100% { transform: translateY(-10vh) translateX(-20px) scale(0.5); opacity: 0; }
+        50% { transform: translateY(50vh) translateX(15px) scale(1); opacity: 0.8; }
+        100% { transform: translateY(-10vh) translateX(-15px) scale(0.5); opacity: 0; }
     }
-    .dot2 {
-        position: absolute;
-        width: 4px;
-        height: 4px;
-        border-radius: 50%;
-        opacity: 0.5;
-        animation: floatDownUp 6s ease-in-out infinite;
-    }
+    .dot2 { position: absolute; width: 3px; height: 3px; border-radius: 50%; opacity: 0.4; animation: floatDownUp 7s ease-in-out infinite; }
     @keyframes floatDownUp {
-        0% { transform: translateY(-10vh) translateX(0); opacity: 0; }
-        50% { transform: translateY(50vh) translateX(-15px); opacity: 0.7; }
-        100% { transform: translateY(110vh) translateX(15px); opacity: 0; }
+        0% { transform: translateY(-10vh); opacity: 0; }
+        50% { transform: translateY(50vh); opacity: 0.6; }
+        100% { transform: translateY(110vh); opacity: 0; }
     }
 </style>
 """, unsafe_allow_html=True)
 
 def inject_sprinkles():
-    colors = ["#3b82f6","#10b981","#f59e0b","#ef4444","#8b5cf6","#ec4899","#06b6d4"]
+    colors = ["#3b82f6","#10b981","#f59e0b","#ef4444","#8b5cf6","#ec4899"]
     html = '<div class="sprinkle-bg">'
-    for i in range(40):
-        left = random.randint(0, 100)
-        delay = random.uniform(0, 5)
-        duration = random.uniform(3, 7)
-        color = random.choice(colors)
-        size = random.randint(4, 7)
-        cls = "dot" if i % 2 == 0 else "dot2"
+    for i in range(28):
+        left = random.randint(0, 100); delay = random.uniform(0, 6); duration = random.uniform(4, 8)
+        color = random.choice(colors); size = random.randint(3, 6); cls = "dot" if i % 2 == 0 else "dot2"
         html += f'<div class="{cls}" style="left:{left}%; background:{color}; width:{size}px; height:{size}px; animation-delay:{delay}s; animation-duration:{duration}s;"></div>'
     html += '</div>'
     st.markdown(html, unsafe_allow_html=True)
 
 inject_sprinkles()
 
-def show_celebration():
-    st.balloons()
-    st.toast("✨ Transaction Saved!", icon="🎉")
+def show_celebration(): st.balloons(); st.toast("✨ Saved!", icon="🎉")
 
 def init_db():
-    conn=sqlite3.connect('usman.db')
-    c=conn.cursor()
+    conn=sqlite3.connect('usman.db'); c=conn.cursor()
     c.execute('CREATE TABLE IF NOT EXISTS users (username TEXT PRIMARY KEY, password TEXT)')
-    c.execute('''CREATE TABLE IF NOT EXISTS stock_tx 
-                 (id INTEGER PRIMARY KEY AUTOINCREMENT, owner TEXT, product TEXT, tx_type TEXT, qty INTEGER, buy_price REAL, sell_price REAL, profit REAL, date TEXT)''')
-    c.execute('''CREATE TABLE IF NOT EXISTS customers
-                 (id INTEGER PRIMARY KEY AUTOINCREMENT, owner TEXT, name TEXT, type TEXT, amount REAL, date TEXT, notes TEXT)''')
-    c.execute('''CREATE TABLE IF NOT EXISTS cash_flow
-                 (id INTEGER PRIMARY KEY AUTOINCREMENT, owner TEXT, type TEXT, amount REAL, reason TEXT, date TEXT)''')
+    c.execute('''CREATE TABLE IF NOT EXISTS stock_tx (id INTEGER PRIMARY KEY AUTOINCREMENT, owner TEXT, product TEXT, tx_type TEXT, qty INTEGER, buy_price REAL, sell_price REAL, profit REAL, date TEXT)''')
+    c.execute('''CREATE TABLE IF NOT EXISTS customers (id INTEGER PRIMARY KEY AUTOINCREMENT, owner TEXT, name TEXT, type TEXT, amount REAL, date TEXT, notes TEXT)''')
+    c.execute('''CREATE TABLE IF NOT EXISTS cash_flow (id INTEGER PRIMARY KEY AUTOINCREMENT, owner TEXT, type TEXT, amount REAL, reason TEXT, date TEXT)''')
     conn.commit(); conn.close()
 
 def make_hash(p): return hashlib.sha256(str.encode(p)).hexdigest()
@@ -123,8 +91,7 @@ def check_hash(p,h): return make_hash(p)==h
 init_db()
 
 if "logged_in" not in st.session_state:
-    st.session_state.logged_in=False
-    st.session_state.username=""
+    st.session_state.logged_in=False; st.session_state.username=""
 
 def login_page():
     st.markdown('<div class="main-header"><h1>💎 USMAN TECHNOLOGIES</h1><p>Enterprise Business Management Platform</p></div>', unsafe_allow_html=True)
@@ -133,11 +100,9 @@ def login_page():
         st.markdown('<div class="glass-card">', unsafe_allow_html=True)
         t1,t2=st.tabs(["LOGIN","CREATE ACCOUNT"])
         with t1:
-            u=st.text_input("Username", placeholder="Enter your username")
-            p=st.text_input("Password", type="password", placeholder="Enter password")
+            u=st.text_input("Username", placeholder="Enter username"); p=st.text_input("Password", type="password", placeholder="Password")
             if st.button("LOGIN SECURELY"):
-                conn=sqlite3.connect('usman.db'); c=conn.cursor()
-                c.execute('SELECT password FROM users WHERE username=?',(u,)); d=c.fetchone(); conn.close()
+                conn=sqlite3.connect('usman.db'); c=conn.cursor(); c.execute('SELECT password FROM users WHERE username=?',(u,)); d=c.fetchone(); conn.close()
                 if d and check_hash(p,d[0]): st.session_state.logged_in=True; st.session_state.username=u; st.rerun()
                 else: st.error("Incorrect Username or Password")
         with t2:
@@ -145,19 +110,16 @@ def login_page():
             if st.button("CREATE ACCOUNT"):
                 if nu and np:
                     conn=sqlite3.connect('usman.db'); c=conn.cursor()
-                    try: c.execute('INSERT INTO users VALUES (?,?)',(nu,make_hash(np))); conn.commit(); st.success("Account Created! Please Login."); show_celebration()
-                    except: st.error("Username Already Exists")
+                    try: c.execute('INSERT INTO users VALUES (?,?)',(nu,make_hash(np))); conn.commit(); st.success("Account Created!"); show_celebration()
+                    except: st.error("Username Exists")
                     conn.close()
         st.markdown('</div>', unsafe_allow_html=True)
 
-if not st.session_state.logged_in:
-    login_page(); st.stop()
+if not st.session_state.logged_in: login_page(); st.stop()
 
 owner=st.session_state.username
 with st.sidebar:
-    st.markdown(f"### Welcome, {owner}")
-    st.write("Premium Dashboard")
-    st.divider()
+    st.markdown(f"### Welcome, {owner}"); st.divider()
     menu=st.radio("Navigation", ["📊 Dashboard & Graph","📦 Stock IN / OUT","📋 Current Stock","👥 Credit & Pending","💰 Cash Flow"])
     st.divider()
     if st.button("Logout"): st.session_state.logged_in=False; st.rerun()
@@ -175,22 +137,26 @@ if "Dashboard" in menu:
     total_out = df_tx[df_tx['tx_type']=='OUT']['qty'].sum() if not df_tx.empty else 0
     current_stock_qty = total_in - total_out
     total_profit = df_tx['profit'].sum() if not df_tx.empty else 0
-    c1,c2,c3,c4=st.columns(4)
-    with c1: st.markdown(f'<div class="glass-card"><h4>Total IN</h4><h2>{int(total_in)}</h2></div>', unsafe_allow_html=True)
-    with c2: st.markdown(f'<div class="glass-card"><h4>Total OUT</h4><h2>{int(total_out)}</h2></div>', unsafe_allow_html=True)
-    with c3: st.markdown(f'<div class="glass-card"><h4>Stock Left</h4><h2>{int(current_stock_qty)}</h2></div>', unsafe_allow_html=True)
-    with c4: color = "#10b981" if total_profit>=0 else "#ef4444"; st.markdown(f'<div class="glass-card" style="border-left:5px solid {color}"><h4>Profit / Loss</h4><h2>Rs. {total_profit:,.0f}</h2></div>', unsafe_allow_html=True)
-    st.divider()
-    st.subheader("📈 Profit / Loss Graph - Goes Down If Loss")
+    color = "#10b981" if total_profit>=0 else "#ef4444"
+    st.markdown(f"""
+    <div class="metric-grid">
+        <div class="glass-card small-card"><h4>Total IN</h4><h2>{int(total_in)}</h2></div>
+        <div class="glass-card small-card"><h4>Total OUT</h4><h2>{int(total_out)}</h2></div>
+        <div class="glass-card small-card"><h4>Stock Left</h4><h2>{int(current_stock_qty)}</h2></div>
+        <div class="glass-card small-card" style="border-left:4px solid {color}"><h4>Profit / Loss</h4><h2>Rs. {total_profit:,.0f}</h2></div>
+    </div>
+    """, unsafe_allow_html=True)
+    st.subheader("📈 Profit / Loss Graph")
     if not df_tx.empty:
         df_sorted = df_tx.sort_values('date')
         df_sorted['cumulative_profit'] = df_sorted['profit'].cumsum()
         df_sorted['c_stock'] = df_sorted.apply(lambda x: x['qty'] if x['tx_type']=='IN' else -x['qty'], axis=1).cumsum()
-        st.line_chart(df_sorted[['cumulative_profit']], height=280)
+        st.line_chart(df_sorted[['cumulative_profit']])
         st.write("Stock Level Graph")
-        st.area_chart(df_sorted[['c_stock']], height=250)
+        st.area_chart(df_sorted[['c_stock']])
     else:
         st.info("Add some Stock IN/OUT to see graphs.")
+
 elif "Stock IN" in menu:
     st.markdown('<div class="glass-card">', unsafe_allow_html=True)
     st.subheader("Stock Movement")
@@ -209,23 +175,17 @@ elif "Stock IN" in menu:
                 real_type="IN" if "IN" in tx_type else "OUT"
                 profit=(sell_price-buy_price)*qty if real_type=="OUT" else 0
                 conn=sqlite3.connect('usman.db'); c=conn.cursor()
-                c.execute('INSERT INTO stock_tx (owner,product,tx_type,qty,buy_price,sell_price,profit,date) VALUES (?,?,?,?,?,?,?,?)',
-                          (owner,product,real_type,qty,buy_price,sell_price,profit,str(date)))
-                conn.commit(); conn.close()
-                st.success(f"Saved! Profit: Rs. {profit}"); show_celebration()
+                c.execute('INSERT INTO stock_tx (owner,product,tx_type,qty,buy_price,sell_price,profit,date) VALUES (?,?,?,?,?,?,?,?)',(owner,product,real_type,qty,buy_price,sell_price,profit,str(date)))
+                conn.commit(); conn.close(); st.success(f"Saved! Profit: Rs. {profit}"); show_celebration()
     st.markdown('</div>', unsafe_allow_html=True)
+
 elif "Current Stock" in menu:
     st.subheader("📋 Current Stock Left")
     if not df_tx.empty:
-        summary = df_tx.groupby('product').apply(lambda x: pd.Series({
-            'Total IN': x[x['tx_type']=='IN']['qty'].sum(),
-            'Total OUT': x[x['tx_type']=='OUT']['qty'].sum(),
-            'Current Left': x[x['tx_type']=='IN']['qty'].sum() - x[x['tx_type']=='OUT']['qty'].sum(),
-            'Total Profit': x['profit'].sum()
-        })).reset_index()
-        st.dataframe(summary, use_container_width=True, hide_index=True)
-        st.bar_chart(summary.set_index('product')['Current Left'])
+        summary = df_tx.groupby('product').apply(lambda x: pd.Series({'Total IN': x[x['tx_type']=='IN']['qty'].sum(),'Total OUT': x[x['tx_type']=='OUT']['qty'].sum(),'Current Left': x[x['tx_type']=='IN']['qty'].sum() - x[x['tx_type']=='OUT']['qty'].sum(),'Total Profit': x['profit'].sum()})).reset_index()
+        st.dataframe(summary, use_container_width=True, hide_index=True); st.bar_chart(summary.set_index('product')['Current Left'])
     else: st.info("No data yet.")
+
 elif "Credit" in menu:
     st.subheader("👥 Credit & Pending Customers")
     with st.form("cust_form"):
@@ -234,33 +194,24 @@ elif "Credit" in menu:
             name=st.text_input("Customer Name *")
             c_type=st.selectbox("Type *", ["CREDIT - He has to pay me","PENDING - My cash is pending"])
         with col2:
-            amount=st.number_input("Amount Rs. *", min_value=0.0)
-            notes=st.text_input("Notes")
+            amount=st.number_input("Amount Rs. *", min_value=0.0); notes=st.text_input("Notes")
         if st.form_submit_button("Add Customer"):
             if name:
                 real_c_type="CREDIT" if "CREDIT" in c_type else "PENDING"
                 conn=sqlite3.connect('usman.db'); c=conn.cursor()
-                c.execute('INSERT INTO customers (owner,name,type,amount,date,notes) VALUES (?,?,?,?,?,?)',
-                          (owner,name,real_c_type,amount,str(datetime.now().date()),notes))
-                conn.commit(); conn.close()
-                st.success("Customer Added!"); show_celebration()
-    if not df_cust.empty:
-        st.dataframe(df_cust[['name','type','amount','date','notes']], use_container_width=True, hide_index=True)
+                c.execute('INSERT INTO customers (owner,name,type,amount,date,notes) VALUES (?,?,?,?,?,?)',(owner,name,real_c_type,amount,str(datetime.now().date()),notes))
+                conn.commit(); conn.close(); st.success("Customer Added!"); show_celebration()
+    if not df_cust.empty: st.dataframe(df_cust[['name','type','amount','date','notes']], use_container_width=True, hide_index=True)
+
 elif "Cash Flow" in menu:
     st.subheader("💰 Cash IN / OUT")
     with st.form("cash_form"):
         col1,col2=st.columns(2)
-        with col1:
-            cash_type=st.selectbox("Type", ["CASH OUT - Going","CASH IN - Coming"])
-            amount=st.number_input("Amount Rs.", min_value=0.0)
-        with col2:
-            reason=st.text_input("Reason", placeholder="e.g. Rent, Bill")
+        with col1: cash_type=st.selectbox("Type", ["CASH OUT - Going","CASH IN - Coming"]); amount=st.number_input("Amount Rs.", min_value=0.0)
+        with col2: reason=st.text_input("Reason", placeholder="e.g. Rent, Bill")
         if st.form_submit_button("Save Cash"):
             real_cash="OUT" if "OUT" in cash_type else "IN"
             conn=sqlite3.connect('usman.db'); c=conn.cursor()
-            c.execute('INSERT INTO cash_flow (owner,type,amount,reason,date) VALUES (?,?,?,?,?)',
-                      (owner,real_cash,amount,reason,str(datetime.now().date())))
-            conn.commit(); conn.close()
-            st.success(f"Cash {real_cash} Saved!"); show_celebration()
-    if not df_cash.empty:
-        st.dataframe(df_cash[['type','amount','reason','date']], use_container_width=True, hide_index=True)
+            c.execute('INSERT INTO cash_flow (owner,type,amount,reason,date) VALUES (?,?,?,?,?)',(owner,real_cash,amount,reason,str(datetime.now().date())))
+            conn.commit(); conn.close(); st.success(f"Cash {real_cash} Saved!"); show_celebration()
+    if not df_cash.empty: st.dataframe(df_cash[['type','amount','reason','date']], use_container_width=True, hide_index=True)
